@@ -166,3 +166,4 @@ jspm_packages/
 
 # TypeScript cache
 *.tsbuildinfo
+.env*.local
