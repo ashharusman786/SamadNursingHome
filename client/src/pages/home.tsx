@@ -1,5 +1,6 @@
 import UtilityBar from '@/components/utility-bar';
 import Navigation from '@/components/navigation';
+import ThemeToggle from '@/components/ThemeToggle';
 import HealthTipsCarousel from '@/components/HealthTipsCarousel';
 import HeroSection from '@/components/hero-section';
 import MissionSection from '@/components/mission-section';
@@ -24,9 +25,12 @@ export default function Home() {
   const reveal8 = useRevealOnScroll<HTMLDivElement>();
   const reveal9 = useRevealOnScroll<HTMLDivElement>();
   return (
-    <div className="min-h-screen w-full bg-white">
+    <div className="min-h-screen w-full bg-background text-foreground transition-colors duration-200">
       <UtilityBar />
       <Navigation />
+      <div className="fixed bottom-6 right-6 z-50">
+        <ThemeToggle />
+      </div>
       <main className="w-full">
         {/* Health Tips: prominent, just below nav */}
         <section ref={reveal1} className="reveal-init w-full flex flex-col items-stretch justify-center gap-4 px-4 pt-4 pb-2 max-w-3xl mx-auto">

@@ -10,9 +10,14 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      backgroundColor: {
+        DEFAULT: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+      },
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        border: "hsl(var(--border))",
         card: {
           DEFAULT: "var(--card)",
           foreground: "var(--card-foreground)",
