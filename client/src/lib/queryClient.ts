@@ -1,7 +1,18 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
-// API base URL configuration
-const API_BASE_URL = (import.meta as any).env.VITE_API_URL || 'http://localhost:5000';
+// Vite env typings (augment global ImportMeta)
+declare global {
+  interface ImportMetaEnv {
+    readonly VITE_API_URL?: string;
+  }
+
+  interface ImportMeta {
+    readonly env: ImportMetaEnv;
+  }
+}
+
+// API base URL configuration - should be set via environment variable in production
+const API_BASE_URL = import.meta.env.VITE_API_URL || "";
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -15,8 +26,17 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  // Ensure URL is absolute
+  // Security validation
+  if (!url || typeof url !== 'string') {
+    throw new Error('Invalid URL provided');
+  }
+  
+  // Ensure URL is absolute and validate protocol
   const fullUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url}`;
+  
+  if (!fullUrl.startsWith('http://localhost:') && !fullUrl.startsWith('https://')) {
+    throw new Error('Invalid URL protocol - only HTTPS and localhost allowed');
+  }
 
   const res = await fetch(fullUrl, {
     method,
@@ -35,9 +55,18 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
     async ({ queryKey }) => {
-      // Ensure URL is absolute
+      // Security validation
       const url = queryKey[0] as string;
+      if (!url || typeof url !== 'string') {
+        throw new Error('Invalid URL provided');
+      }
+      
+      // Ensure URL is absolute and validate protocol
       const fullUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url}`;
+      
+      if (!fullUrl.startsWith('http://localhost:') && !fullUrl.startsWith('https://')) {
+        throw new Error('Invalid URL protocol - only HTTPS and localhost allowed');
+      }
 
       const res = await fetch(fullUrl, {
         credentials: "include",

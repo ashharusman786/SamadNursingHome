@@ -1,10 +1,9 @@
 import { useTranslation } from "@/hooks/use-translation";
-import { useEffect, useRef } from "react";
 
 export default function ImageGallery() {
   const { t } = useTranslation();
-  const observerRef = useRef<IntersectionObserver | null>(null);
 
+  // TODO: Replace these placeholder images from Unsplash with actual project images.
   const galleryImages = [
     {
       src: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
@@ -12,7 +11,6 @@ export default function ImageGallery() {
       title: t("reception"),
     },
     {
-  
       src: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
       alt: "Patient Room",
       title: t("patient-room"),
@@ -39,56 +37,48 @@ export default function ImageGallery() {
     },
   ];
 
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("loaded");
-            observerRef.current?.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const images = document.querySelectorAll(".lazy-load");
-    images.forEach((image) => {
-      observerRef.current?.observe(image);
-    });
-
-    return () => {
-      observerRef.current?.disconnect();
-    };
-  }, []);
-
   return (
-    <section id="gallery" className="py-16 sm:py-20 md:py-24 lg:py-28 bg-gradient-to-br from-blue-50 via-white to-teal-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 sm:mb-16 lg:mb-20">
-          <div className="glassmorphism rounded-3xl p-6 sm:p-8 lg:p-12 max-w-4xl mx-auto border border-white/20 shadow-xl">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+    <section id="gallery" className="relative py-20 sm:py-24 md:py-32 bg-gradient-to-b from-gray-50 to-white">
+      {/* Subtle background decoration */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-50/20 via-transparent to-emerald-50/20" />
+      
+      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Enhanced Header */}
+        <div className="text-center mb-16 sm:mb-20">
+          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 sm:p-12 max-w-4xl mx-auto border border-gray-100 shadow-xl">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-blue-800 to-gray-900 bg-clip-text text-transparent break-words tracking-tight">
               {t("gallery-title")}
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">{t("gallery-subtitle")}</p>
+            <p className="text-lg sm:text-xl text-gray-700 max-w-3xl mx-auto font-medium">
+              {t("gallery-subtitle")}
+            </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 max-w-7xl mx-auto">
+        {/* Modern Gallery Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto">
           {galleryImages.map((image, index) => (
             <div
               key={index}
-              className="group relative overflow-hidden rounded-3xl shadow-xl card-hover border border-white/20 backdrop-blur-sm"
+              className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 bg-white border border-gray-100"
             >
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="w-full h-48 sm:h-56 md:h-64 object-cover lazy-load transition-transform duration-500 group-hover:scale-110"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-              <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 text-white">
-                <h3 className="text-lg sm:text-xl font-semibold mb-1">{image.title}</h3>
+              <div className="aspect-w-16 aspect-h-12">
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6 text-white">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                  <span className="text-xs font-medium text-emerald-200 uppercase tracking-wide">
+                    {t("gallery-image")}
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold leading-tight">{image.title}</h3>
               </div>
             </div>
           ))}
@@ -97,3 +87,4 @@ export default function ImageGallery() {
     </section>
   );
 }
+

@@ -1,5 +1,16 @@
 import { useState, useEffect } from 'react';
 
+type NetworkInformation = EventTarget & {
+    effectiveType?: string;
+    type?: string;
+    addEventListener: (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions) => void;
+    removeEventListener: (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions) => void;
+};
+
+interface NavigatorWithConnection extends Navigator {
+    connection?: NetworkInformation;
+}
+
 interface UseNetworkStatusReturn {
     isOnline: boolean;
     isOffline: boolean;
@@ -20,11 +31,10 @@ export function useNetworkStatus(): UseNetworkStatusReturn {
         };
 
         const updateConnectionType = () => {
-            if ('connection' in navigator) {
-                const connection = (navigator as any).connection;
-                if (connection) {
-                    setConnectionType(connection.effectiveType || connection.type || 'unknown');
-                }
+            const nav = navigator as NavigatorWithConnection;
+            if (nav.connection) {
+                const { effectiveType, type } = nav.connection;
+                setConnectionType(effectiveType || type || 'unknown');
             }
         };
 
@@ -35,22 +45,17 @@ export function useNetworkStatus(): UseNetworkStatusReturn {
         window.addEventListener('online', handleOnline);
         window.addEventListener('offline', handleOffline);
 
-        if ('connection' in navigator) {
-            const connection = (navigator as any).connection;
-            if (connection) {
-                connection.addEventListener('change', updateConnectionType);
-            }
+        const nav = navigator as NavigatorWithConnection;
+        if (nav.connection) {
+            nav.connection.addEventListener('change', updateConnectionType);
         }
 
         return () => {
             window.removeEventListener('online', handleOnline);
             window.removeEventListener('offline', handleOffline);
 
-            if ('connection' in navigator) {
-                const connection = (navigator as any).connection;
-                if (connection) {
-                    connection.removeEventListener('change', updateConnectionType);
-                }
+            if (nav.connection) {
+                nav.connection.removeEventListener('change', updateConnectionType);
             }
         };
     }, []);
@@ -60,4 +65,4 @@ export function useNetworkStatus(): UseNetworkStatusReturn {
         isOffline: !isOnline,
         connectionType,
     };
-} 
+}

@@ -17,7 +17,18 @@
       "Friday",
       "Saturday"
     ],
-    "isAvailable": true
+    "isAvailable": true,
+    "bio": "Dr. Zeeshan Ahmad is a dedicated general physician with expertise in child healthcare. With over 5 years of experience, he provides compassionate care for patients of all ages.",
+    "education": "BUMS, DCH (Diploma in Child Health)",
+    "languages": ["Hindi", "Urdu", "English"],
+    "experienceYears": 5,
+    "services": ["General Consultation", "Child Health", "Vaccination", "Emergency Care"],
+    "achievements": ["Best Child Specialist Award 2022", "Published 3 research papers"],
+    "consultationFee": "300-500",
+    "specializations": ["Pediatrics", "General Medicine", "Emergency Medicine"],
+    "hospitalAffiliations": ["Samad Nursing Home"],
+    "ratings": 4.8,
+    "patientReviews": 127
   },
   {
     "id": 2,
@@ -37,6 +48,17 @@
       "Friday",
       "Saturday"
     ],
-    "isAvailable": true
+    "isAvailable": true,
+    "bio": "Dr. Badakhshan Malik specializes in women's health and gynecological care. She is committed to providing comprehensive healthcare services for women at all stages of life.",
+    "education": "BUMS (Obstetrics & Gynecology)",
+    "languages": ["Hindi", "Urdu", "English"],
+    "experienceYears": 6,
+    "services": ["Pregnancy Care", "Gynecological Consultation", "Family Planning", "Women's Health Checkup"],
+    "achievements": ["Excellence in Women's Healthcare 2023", "1000+ successful deliveries"],
+    "consultationFee": "400-600",
+    "specializations": ["Obstetrics", "Gynecology", "Maternal Health"],
+    "hospitalAffiliations": ["Samad Nursing Home"],
+    "ratings": 4.9,
+    "patientReviews": 89
   }
 ]

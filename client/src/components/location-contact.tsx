@@ -2,6 +2,7 @@ import { useTranslation } from "@/hooks/use-translation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import MapWithFallback from "@/components/map-with-fallback";
+import EnhancedAppointmentSystem from "@/components/enhanced-appointment-system";
 import {
   Phone,
   Mail,
@@ -12,15 +13,16 @@ import {
 export default function LocationContact() {
   const { t } = useTranslation();
 
+  // TODO: The coordinates are approximate. Please update with the correct coordinates.
   const hospitalLocation = {
     lat: 26.18918008058415,
     lng: 83.22167698219027,
-    address: t("address-english")
+    address: "Samad Nursing Home\nHengaipur Road, Shahabuddinpur, Bilariyaganj\nDistrict Azamgarh, Uttar Pradesh, PIN: 276121"
   };
 
   const mapUrls = {
     embed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d895.0576175541946!2d83.22167698219027!3d26.18918008058415!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3991a1da67192b05%3A0x8b48ca93fe9b6c21!2sSamad%20Nursing%20Home!5e0!3m2!1sen!2sin!4v1751469448526!5m2!1sen!2sin",
-    fallback: `https://www.google.com/maps?q=${hospitalLocation.lat},${hospitalLocation.lng}`,
+    fallback: `https://www.google.com/maps?q=Samad+Nursing+Home,+Hengaipur+Road,+Shahabuddinpur,+Bilariyaganj,+District+Azamgarh,+Uttar+Pradesh,+PIN:+276121`,
     directions: "https://g.co/kgs/K9Cjyrm"
   };
 
@@ -163,6 +165,9 @@ export default function LocationContact() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Enhanced Appointment System */}
+            <EnhancedAppointmentSystem />
           </div>
         </div>
       </div>
