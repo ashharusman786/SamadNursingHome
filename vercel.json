@@ -7,7 +7,7 @@
       "config": { "includeFiles": ["dist/**"] }
     },
     {
-      "src": "client/vite.config.js",
+      "src": "client/package.json",
       "use": "@vercel/static-build",
       "config": {
         "distDir": "client/dist"
