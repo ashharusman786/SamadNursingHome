@@ -82,7 +82,7 @@ This project consists of:
      - `NODE_ENV`: `production`
      - `PORT`: `10000`
      - `CORS_ORIGIN`: Your Vercel frontend URL (e.g., `https://samad-nursing-home-client.vercel.app`)
-     - `SESSION_SECRET`: Generate a random string for session security // 628051a55546ef19cd8a88431791f74c
+     - `SESSION_SECRET`: Generate a random string for session security (use a secure random generator)
 
 5. **Deploy:**
    - Click "Create Web Service"

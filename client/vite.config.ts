@@ -11,7 +11,8 @@ function copySeoFiles() {
     name: 'copy-seo-files',
     writeBundle() {
       const seoDir = resolve(__dirname, 'seo');
-      const outDir = resolve(__dirname, 'dist');
+      // Build output goes to ../dist, so adjust path accordingly
+      const outDir = resolve(__dirname, '..', 'dist');
       ['robots.txt', 'sitemap.xml'].forEach(file => {
         const src = join(seoDir, file);
         const dest = join(outDir, file);
@@ -50,7 +51,7 @@ export default defineConfig(({ mode }) => ({
       },
     }),
     copySeoFiles(),
-  ].filter(Boolean),
+  ],
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
@@ -77,7 +78,6 @@ export default defineConfig(({ mode }) => ({
           vendor: ['@tanstack/react-query'],
           ui: [
             '@radix-ui/react-dialog',
-            '@radix-ui/react-dropdown-menu',
             'lucide-react',
             'class-variance-authority',
             'tailwind-merge',

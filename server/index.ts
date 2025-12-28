@@ -20,27 +20,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use((req: Request, res: Response, next: NextFunction) => {
   const start = Date.now();
   const path = req.path;
-  let capturedJsonResponse: Record<string, any> | undefined = undefined;
-
-  const originalResJson = res.json;
-  res.json = function (bodyJson: any) {
-    capturedJsonResponse = bodyJson;
-    return originalResJson.call(res, bodyJson);
-  };
 
   res.on("finish", () => {
     const duration = Date.now() - start;
     if (path.startsWith("/api")) {
-      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
+      const logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
+      // Only log in development or if explicitly enabled
+      if (process.env.NODE_ENV !== 'production' || process.env.ENABLE_REQUEST_LOGGING === 'true') {
+        console.log(logLine);
       }
-
-      if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "…";
-      }
-
-      console.log(logLine);
     }
   });
 
@@ -80,6 +68,8 @@ app.get('/health', (req: Request, res: Response) => {
     port: parseInt(port.toString()),
     host
   }, () => {
-    console.log(`🚀 Server running on ${host}:${port} in ${process.env.NODE_ENV || 'development'} mode`);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`🚀 Server running on ${host}:${port} in ${process.env.NODE_ENV || 'development'} mode`);
+    }
   });
 })();
