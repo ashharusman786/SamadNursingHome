@@ -50,9 +50,8 @@ export default function MapWithFallback({
     
     // Set timeout for map loading
     timeoutRef.current = setTimeout(() => {
-      if (mapState === 'loading') {
-        setMapState('timeout');
-      }
+      // Re-check using functional update to avoid stale closure
+      setMapState((prev) => (prev === 'loading' ? 'timeout' : prev));
     }, timeoutMs) as unknown as number;
 
     return () => {
@@ -60,7 +59,7 @@ export default function MapWithFallback({
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [isOffline, retryCount]);
+  }, [isOffline, retryCount, mapState]);
 
   const handleMapLoad = () => {
     if (timeoutRef.current) {

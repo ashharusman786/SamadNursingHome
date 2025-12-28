@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -5,10 +6,16 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { TranslationProvider } from "@/hooks/use-translation";
 import NetworkStatusIndicator from "@/components/network-status-indicator";
-import Home from "@/pages/home";
-import NotFound from "@/pages/not-found";
-import PrivacyPolicy from "@/pages/privacy-policy";
-import TermsOfService from "@/pages/terms-of-service";
+import Layout from "@/components/Layout";
+
+// Lazy-loaded pages
+const Home = lazy(() => import("@/pages/home"));
+const NotFound = lazy(() => import("@/pages/not-found"));
+const PrivacyPolicy = lazy(() => import("@/pages/privacy-policy"));
+const TermsOfService = lazy(() => import("@/pages/terms-of-service"));
+
+// Import theme styles
+import "@/index.css";
 
 function Router() {
   return (
@@ -26,9 +33,13 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <TranslationProvider>
-          <NetworkStatusIndicator />
-          <Toaster />
-          <Router />
+          <Layout>
+            <NetworkStatusIndicator />
+            <Toaster />
+            <Suspense fallback={<div>Loading...</div>}>
+              <Router />
+            </Suspense>
+          </Layout>
         </TranslationProvider>
       </TooltipProvider>
     </QueryClientProvider>
@@ -36,3 +47,4 @@ function App() {
 }
 
 export default App;
+

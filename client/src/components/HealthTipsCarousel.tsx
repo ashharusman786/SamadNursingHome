@@ -12,11 +12,7 @@ export default function HealthTipsCarousel() {
     t('get-sleep-tips'),
     t('eat-healthy-tips'),
     t('exercise-tips'),
-    "Wash your hands regularly.",
-    "Get at least 7-8 hours of sleep.",
-    "Exercise for 30 minutes daily.",
-    "Eat more fruits and vegetables.",
-    "Take regular health checkups.",
+    t('health-checkup-tips'),
   ], [t]);
 
   const [index, setIndex] = useState(0);
