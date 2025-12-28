@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express, { type Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { registerRoutes } from "./routes.js";
@@ -6,9 +7,7 @@ const app = express();
 
 // CORS configuration for production
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production'
-    ? [process.env.CORS_ORIGIN || 'https://samad-nursing-home-client.vercel.app'] // Update with your actual Vercel domain
-    : ['http://localhost:3000', 'http://localhost:5173'],
+  origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : ['http://localhost:5173'],
   credentials: true,
   optionsSuccessStatus: 200
 };

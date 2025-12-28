@@ -1,6 +1,5 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import express from 'express';
@@ -257,41 +256,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(translationsData);
     } catch (error) {
       res.status(500).json({ error: 'Failed to load translations data' });
-    }
-  });
-
-  // User management routes (using in-memory storage for now)
-  app.post('/api/users', async (req: Request, res: Response) => {
-    try {
-      const { username, password } = req.body;
-      if (!username || !password) {
-        return res.status(400).json({ error: 'Username and password are required' });
-      }
-
-      const existingUser = await storage.getUserByUsername(username);
-      if (existingUser) {
-        return res.status(409).json({ error: 'Username already exists' });
-      }
-
-      const newUser = await storage.createUser({ username, password });
-      res.status(201).json({ id: newUser.id, username: newUser.username });
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to create user' });
-    }
-  });
-
-  app.get('/api/users/:id', async (req: Request, res: Response) => {
-    try {
-      const userId = parseInt(req.params.id);
-      const user = await storage.getUser(userId);
-
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-
-      res.json({ id: user.id, username: user.username });
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to get user' });
     }
   });
 
